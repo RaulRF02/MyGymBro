@@ -1,1 +1,36 @@
+# Entorno virtual
+.venv/
+venv/
+
+# Archivos de configuración de entorno
+.env
+
+# Archivos y carpetas específicos de IDEs
 .idea/
+*.pyc
+__pycache__/
+
+# Archivos de base de datos
+mygymbro.db
+
+# Archivos generados de logs y caché
+*.log
+*.cache
+
+# Archivos de dependencias
+*.egg-info/
+dist/
+build/
+__pycache__/
+
+# Archivos de instalación de pip
+get-pip.py
+
+# Archivos de resultados de tests (si tienes un archivo de salida específico)
+tests/__pycache__/
+tests/*.log
+
+# Otros archivos innecesarios para el control de versiones
+*.bak
+*.swp
+.DS_Store
