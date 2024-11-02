@@ -1,13 +1,30 @@
 openapi: 3.0.0
 info:
   title: MyGymBro API
-  description: API for managing user registration, routines, and training plans.
+  description: API for managing user registration, authentication, routines, and training plans.
   version: 1.0.0
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: "User Management"
+    description: "Endpoints for managing users and roles"
 
 paths:
   /api/users/register:
     post:
+      tags:
+        - "User Management"
       summary: Register a new user
+      description: Register a new user with the default role "user".
       requestBody:
         required: true
         content:
@@ -19,27 +36,179 @@ paths:
                   type: string
                 last_name:
                   type: string
+                dni:
+                  type: string
                 email:
                   type: string
                 password:
                   type: string
-                dni:
-                  type: string
-                role:
-                  type: string
-                  enum: [admin, trainer, user]
       responses:
         '201':
-          description: User registered successfully.
+          description: User registered successfully
+        '400':
+          description: Email and password are required
+        '409':
+          description: Email already exists
 
-  /api/routines:
+  /api/users/login:
     post:
-      summary: Create a new routine
-    get:
-      summary: Get all routines
+      tags:
+        - "User Management"
+      summary: Log in a user
+      description: Authenticate a user and return a JWT token for accessing protected routes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Access token returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+        '401':
+          description: Invalid email or password
 
-  /api/training-plans:
-    post:
-      summary: Create a new training plan
+  /api/users/profile:
     get:
-      summary: Get all training plans
+      tags:
+        - "User Management"
+      summary: Get user profile
+      description: Retrieve the profile information of the logged-in user.
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: User profile data retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  last_name:
+                    type: string
+                  email:
+                    type: string
+                  role:
+                    type: string
+        '403':
+          description: Authorization required
+
+  /api/users/profile/{user_id}:
+    get:
+      tags:
+        - "User Management"
+      summary: Get user profile by ID
+      description: Retrieve profile information for a specific user.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: User profile retrieved successfully
+        '404':
+          description: User not found
+        '403':
+          description: You do not have permission to view this profile
+
+  /api/users/add_admin/{user_id}:
+    put:
+      tags:
+        - "User Management"
+      summary: Grant admin role to a user
+      description: Grants admin privileges to a user. Only admins can access this endpoint.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Admin role granted successfully
+        '403':
+          description: Admin access required
+        '404':
+          description: User not found
+
+  /api/users/remove_admin/{user_id}:
+    put:
+      tags:
+        - "User Management"
+      summary: Revoke admin role from a user
+      description: Revokes admin privileges from a user. Only admins can access this endpoint.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Admin role revoked successfully
+        '400':
+          description: User is not an admin
+        '403':
+          description: Admin access required
+        '404':
+          description: User not found
+
+  /api/users/add_trainer/{user_id}:
+    put:
+      tags:
+        - "User Management"
+      summary: Grant trainer role to a user
+      description: Grants trainer privileges to a user. Only admins can access this endpoint.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Trainer role granted successfully
+        '403':
+          description: Admin access required
+        '404':
+          description: User not found
+
+  /api/users/remove_trainer/{user_id}:
+    put:
+      tags:
+        - "User Management"
+      summary: Revoke trainer role from a user
+      description: Revokes trainer privileges from a user. Only admins can access this endpoint.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Trainer role revoked successfully
+        '400':
+          description: User is not a trainer
+        '403':
+          description: Admin access required
+        '404':
+          description: User not found

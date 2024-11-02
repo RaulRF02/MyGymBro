@@ -23,7 +23,16 @@ class Config:
         "static_url_path": "/flasgger_static",
         "swagger_ui": True,
         "specs_route": "/apidocs/",
-        "headers": []
+        "headers": [],
+        "securityDefinitions": {
+            "Bearer": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header",
+                "description": "Enter: **'Bearer &lt;JWT&gt;'**, where JWT is the token"
+            }
+        },
+        "security": [{"Bearer": []}],
     }
     SQLALCHEMY_DATABASE_URI = 'sqlite:///mygymbro.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
