@@ -17,6 +17,14 @@ security:
 tags:
   - name: "User Management"
     description: "Endpoints for managing users and roles"
+  - name: "Exercise Management"
+    description: "Endpoints for managing exercises"
+  - name: "Routine Management"
+    description: "Endpoints for managing routines"
+  - name: "Progress Management"
+    description: "Endpoints for managing user progress"
+  - name: "Training Plan Management"
+    description: "Endpoints for managing training plans"
 
 paths:
   /api/users/register:
@@ -212,3 +220,476 @@ paths:
           description: Admin access required
         '404':
           description: User not found
+  /api/exercises:
+    post:
+      tags:
+        - "Exercise Management"
+      summary: Create a new exercise
+      description: Allows a trainer or admin to create a new exercise.
+      security:
+        - BearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the exercise
+                description:
+                  type: string
+                  description: Detailed description of the exercise
+                category:
+                  type: string
+                  description: Category of the exercise (e.g., strength, cardio)
+                count_type:
+                  type: string
+                  description: Counting type (repetitions or time)
+                count_value:
+                  type: integer
+                  description: Number of repetitions or duration in seconds
+                equipment_required:
+                  type: boolean
+                  description: Indicates if equipment is required
+                equipment_list:
+                  type: string
+                  description: List of required equipment
+                recommended_series:
+                  type: integer
+                  description: Recommended number of series
+                rest_time:
+                  type: integer
+                  description: Rest time between series in seconds
+                execution_tips:
+                  type: string
+                  description: Tips for proper execution
+      responses:
+        '201':
+          description: Exercise created successfully
+        '403':
+          description: Trainer or admin access required
+
+    get:
+      tags:
+        - "Exercise Management"
+      summary: Get all exercises
+      description: Retrieve a list of all exercises.
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: List of exercises retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    category:
+                      type: string
+                    count_type:
+                      type: string
+                    count_value:
+                      type: integer
+                    equipment_required:
+                      type: boolean
+
+  /api/exercises/{exercise_id}:
+    get:
+      tags:
+        - "Exercise Management"
+      summary: Get exercise details
+      description: Retrieve details of a specific exercise by its ID.
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: exercise_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID of the exercise to retrieve
+      responses:
+        '200':
+          description: Exercise details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  category:
+                    type: string
+                  count_type:
+                    type: string
+                  count_value:
+                    type: integer
+                  equipment_required:
+                    type: boolean
+                  equipment_list:
+                    type: string
+                  recommended_series:
+                    type: integer
+                  rest_time:
+                    type: integer
+                  execution_tips:
+                    type: string
+        '404':
+          description: Exercise not found
+
+    put:
+      tags:
+        - "Exercise Management"
+      summary: Update an exercise
+      description: Allows a trainer or admin to update details of an exercise.
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: exercise_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID of the exercise to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Updated name of the exercise
+                description:
+                  type: string
+                  description: Updated description
+                category:
+                  type: string
+                  description: Updated category
+                count_type:
+                  type: string
+                  description: Updated counting type
+                count_value:
+                  type: integer
+                  description: Updated repetitions or duration
+                equipment_required:
+                  type: boolean
+                  description: Updated equipment requirement
+                equipment_list:
+                  type: string
+                  description: Updated equipment list
+                recommended_series:
+                  type: integer
+                  description: Updated recommended series
+                rest_time:
+                  type: integer
+                  description: Updated rest time
+                execution_tips:
+                  type: string
+                  description: Updated tips for execution
+      responses:
+        '200':
+          description: Exercise updated successfully
+        '403':
+          description: Trainer or admin access required
+        '404':
+          description: Exercise not found
+
+    delete:
+      tags:
+        - "Exercise Management"
+      summary: Delete an exercise
+      description: Allows an admin to delete an exercise by its ID.
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: exercise_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID of the exercise to delete
+      responses:
+        '200':
+          description: Exercise deleted successfully
+        '403':
+          description: Admin access required
+        '404':
+          description: Exercise not found
+  /api/routines/{routine_id}:
+    get:
+      tags:
+        - "Routine Management"
+      summary: Get routine details
+      description: Retrieve details of a specific routine by its ID.
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: routine_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID of the routine to retrieve
+      responses:
+        '200':
+          description: Routine details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  objective:
+                    type: string
+                  description:
+                    type: string
+        '404':
+          description: Routine not found
+
+    put:
+      tags:
+        - "Routine Management"
+      summary: Update a routine
+      description: Allows an admin to update details of a routine.
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: routine_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID of the routine to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Updated name of the routine
+                description:
+                  type: string
+                  description: Updated description of the routine
+                objective:
+                  type: string
+                  description: Updated objective of the routine
+      responses:
+        '200':
+          description: Routine updated successfully
+        '403':
+          description: Admin access required
+        '404':
+          description: Routine not found
+
+    delete:
+      tags:
+        - "Routine Management"
+      summary: Delete a routine
+      description: Allows an admin to delete a routine by its ID.
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: routine_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID of the routine to delete
+      responses:
+        '200':
+          description: Routine deleted successfully
+        '403':
+          description: Admin access required
+        '404':
+          description: Routine not found
+  /api/progress:
+    post:
+      tags:
+        - "Progress Management"
+      summary: Create a progress record
+      description: Creates a new progress record for a user.
+      security:
+        - BearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                exercise_id:
+                  type: integer
+                  description: ID of the exercise
+                routine_id:
+                  type: integer
+                  description: ID of the routine
+                training_plan_id:
+                  type: integer
+                  description: ID of the training plan (optional)
+                series_completed:
+                  type: integer
+                repetitions_per_series:
+                  type: integer
+                time_per_series:
+                  type: integer
+                weight_used:
+                  type: number
+                user_notes:
+                  type: string
+                trainer_notes:
+                  type: string
+                exercise_status:
+                  type: string
+                perceived_effort:
+                  type: integer
+      responses:
+        '201':
+          description: Progress record created successfully
+
+    get:
+      tags:
+        - "Progress Management"
+      summary: Get all progress records
+      description: Retrieve all progress records of the authenticated user.
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: List of progress records retrieved successfully
+
+  /api/progress/exercise/{exercise_id}:
+    get:
+      tags:
+        - "Progress Management"
+      summary: Get progress by exercise
+      description: Retrieve progress records for a specific exercise.
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: exercise_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Progress records retrieved successfully
+
+  /api/routines:
+    post:
+      tags:
+        - "Routine Management"
+      summary: Create a new routine
+      description: Allows an admin to create a new predefined routine.
+      security:
+        - BearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                objective:
+                  type: string
+      responses:
+        '201':
+          description: Routine created successfully
+
+    get:
+      tags:
+        - "Routine Management"
+      summary: Get all routines
+      description: Retrieve a list of all predefined routines.
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: List of routines retrieved successfully
+
+
+  /api/training-plans:
+    post:
+      tags:
+        - "Training Plan Management"
+      summary: Create a new training plan
+      description: Allows an admin to create a new training plan.
+      security:
+        - BearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                objective:
+                  type: string
+                duration:
+                  type: integer
+                weekly_frequency:
+                  type: integer
+                difficulty_level:
+                  type: string
+                assigned_to:
+                  type: integer
+      responses:
+        '201':
+          description: Training plan created successfully
+
+    get:
+      tags:
+        - "Training Plan Management"
+      summary: Get all training plans
+      description: Retrieve a list of all training plans.
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: List of training plans retrieved successfully
+
+  /api/training-plans/{plan_id}:
+    get:
+      tags:
+        - "Training Plan Management"
+      summary: Get training plan details
+      description: Retrieve details of a specific training plan by its ID.
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: plan_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Training plan details retrieved successfully

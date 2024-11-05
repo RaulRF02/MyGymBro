@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.training_plan_model import TrainingPlan
 from app import db
 
@@ -9,13 +9,18 @@ training_plan_bp = Blueprint('training_plan_routes', __name__)
 @jwt_required()
 def create_training_plan():
     data = request.get_json()
+    current_user = get_jwt_identity()
+    current_user_id = current_user['user_id']
+
     new_plan = TrainingPlan(
         name=data['name'],
         description=data.get('description', ''),
         objective=data['objective'],
         duration=data['duration'],
         weekly_frequency=data['weekly_frequency'],
-        difficulty_level=data['difficulty_level']
+        difficulty_level=data['difficulty_level'],
+        assigned_to=data['assigned_to'],
+        created_by=current_user_id
     )
     db.session.add(new_plan)
     db.session.commit()

@@ -1,3 +1,5 @@
+from sqlalchemy.orm import relationship
+
 from app import db
 from models.enums import RoutineTypeEnum, DifficultyLevelEnum, RoutineStatusEnum, TrainingGoalEnum
 from datetime import datetime
@@ -14,6 +16,7 @@ class Routine(db.Model):
     routine_type = db.Column(RoutineTypeEnum, default='predefined')  # Type of routine
     training_plan_id = db.Column(db.Integer, db.ForeignKey('training_plans.id'),
                                  nullable=True)  # FK a TrainingPlan (opcional)
+    training_plan = relationship("TrainingPlan", back_populates="routines")
     # Exercise details
     exercises = db.relationship('Exercise', secondary="routine_exercises",
                                 backref='routines')  # Many-to-Many with Exercise
