@@ -1,3 +1,5 @@
+from sqlalchemy.orm import relationship
+
 from app import db
 from sqlalchemy import ForeignKey
 from datetime import datetime
@@ -17,7 +19,7 @@ class TrainingPlan(db.Model):
     difficulty_level = db.Column(DifficultyLevelEnum)  # Difficulty level (beginner, intermediate, advanced)
 
     # Relationship with routines
-    routines = db.relationship('Routine', backref='training_plan', lazy=True)  # One-to-Many relationship with Routine
+    routines = relationship("Routine", back_populates="training_plan")
     sequence = db.Column(db.JSON, nullable=True)  # Sequence for daily routines (e.g., { "day1": "routine1_id", ... })
     additional_guidelines = db.Column(db.Text, nullable=True)  # Additional recommendations (e.g., active rest, recovery days)
 

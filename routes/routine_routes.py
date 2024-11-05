@@ -1,19 +1,30 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.routine_model import Routine
 from app import db
 
 routine_bp = Blueprint('routine_routes', __name__)
 
+# Helper function to ensure only admins can access certain endpoints
+def admin_required(fn):
+    @jwt_required()
+    def wrapper(*args, **kwargs):
+        claims = get_jwt_identity()
+        if claims['role'] != 'admin':
+            return jsonify({"error": "Admin access required"}), 403
+        return fn(*args, **kwargs)
+    wrapper.__name__ = fn.__name__
+    return wrapper
+
 @routine_bp.route('/routines', methods=['POST'])
-@jwt_required()
+@admin_required
 def create_routine():
     data = request.get_json()
     new_routine = Routine(
         name=data['name'],
         description=data.get('description', ''),
         objective=data['objective'],
-        routine_type=data.get('routine_type', 'predefined')
+        routine_type='predefined'  # Ensure this is a general routine
     )
     db.session.add(new_routine)
     db.session.commit()
@@ -38,7 +49,7 @@ def get_routine(routine_id):
     }), 200
 
 @routine_bp.route('/routines/<int:routine_id>', methods=['PUT'])
-@jwt_required()
+@admin_required
 def update_routine(routine_id):
     data = request.get_json()
     routine = Routine.query.get_or_404(routine_id)
@@ -49,7 +60,7 @@ def update_routine(routine_id):
     return jsonify({'message': 'Routine updated successfully!'}), 200
 
 @routine_bp.route('/routines/<int:routine_id>', methods=['DELETE'])
-@jwt_required()
+@admin_required
 def delete_routine(routine_id):
     routine = Routine.query.get_or_404(routine_id)
     db.session.delete(routine)
