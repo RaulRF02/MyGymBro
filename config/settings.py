@@ -4,13 +4,14 @@ from dotenv import load_dotenv
 # Cargar variables de entorno desde .env
 load_dotenv()
 
+
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "supersecretkey")
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "jwtsecretkey")
     DEBUG = os.getenv("DEBUG", "True") == "True"
     SWAGGER = {
-        'title': "MyGymBro API",
-        'uiversion': 3,
+        "title": "MyGymBro API",
+        "uiversion": 3,
         "openapi": "3.0.0",
         "specs": [
             {
@@ -29,10 +30,10 @@ class Config:
                 "type": "apiKey",
                 "name": "Authorization",
                 "in": "header",
-                "description": "Enter: **'Bearer &lt;JWT&gt;'**, where JWT is the token"
+                "description": "Enter: **'Bearer &lt;JWT&gt;'**, where JWT is the token",
             }
         },
         "security": [{"Bearer": []}],
     }
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///mygymbro.db'
+    SQLALCHEMY_DATABASE_URI = "sqlite:///mygymbro.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
