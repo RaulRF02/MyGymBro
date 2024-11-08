@@ -34,3 +34,10 @@ tests/*.log
 *.bak
 *.swp
 .DS_Store
+
+# Archivos generados por coverage (pruebas de cobertura)
+.coverage
+htmlcov/
+.coverage.*
+*.cover
+*.coveragerc

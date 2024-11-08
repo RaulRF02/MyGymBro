@@ -2,8 +2,9 @@ from app import db
 from models.enums import UserRoleEnum, TrainingGoalEnum
 from datetime import date
 
+
 class User(db.Model):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)  # ID único del usuario
     name = db.Column(db.String(50), nullable=False)
@@ -11,7 +12,7 @@ class User(db.Model):
     dni = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
-    role = db.Column(UserRoleEnum, nullable=False, default='user')
+    role = db.Column(UserRoleEnum, nullable=False, default="user")
 
     birth_date = db.Column(db.Date)
     gender = db.Column(db.String(10))
@@ -25,4 +26,4 @@ class User(db.Model):
     # routines = db.relationship('Routine', backref='user', lazy=True)
 
     def __repr__(self):
-        return f'<User {self.first_name} {self.last_name} - {self.email}>'
+        return f"<User {self.first_name} {self.last_name} - {self.email}>"
