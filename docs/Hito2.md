@@ -60,3 +60,47 @@ Una de las mayores ventajas de pytest es su capacidad de autodetección de archi
 lo que simplifica la organización y ejecución de los tests. Esto es especialmente útil en MyGymBro, donde se 
 requieren pruebas constantes para validar endpoints y lógica de negocio. Además, pytest genera informes detallados 
 que facilitan la identificación de errores, agilizando la resolución de problemas.
+
+## Sistema de prueba de código online
+
+Para asegurar la calidad y estabilidad del proyecto, he optado por utilizar GitHub Actions como sistema de integración 
+continua (CI). He configurado un pipeline en GitHub Actions que automatiza la ejecución de tests cada vez que se 
+realiza un push a las ramas main o master. Para ello, he creado un archivo .yml en el directorio .github/workflows del 
+proyecto. Esta configuración utiliza Poetry para gestionar dependencias y pytest para ejecutar las pruebas, 
+asegurando que todo se ejecute en un entorno controlado.
+
+### Resumen de la Configuración:
+
+- **Checkout del código:** Utilizo actions/checkout para clonar el repositorio en el entorno de GitHub Actions.
+- **Configuración del entorno:** Se instala Python 3.12 y Poetry, que es el gestor de dependencias del proyecto.
+- **Instalación de dependencias:** Mediante poetry install, se asegura que todas las librerías necesarias estén disponibles.
+- **Ejecución de tests:** Utilizo poetry run pytest para ejecutar todas las pruebas, generando un informe de cobertura del código.
+
+Este pipeline se ejecuta en cada push y pull request, permitiéndonos detectar fallos de forma temprana antes de 
+fusionar cambios en la rama principal. Esto asegura que el proyecto se mantenga estable y libre de errores.
+
+## Resumen de Tests 
+
+A continuación, se presenta un resumen de los tests realizados para cada modelo y funcionalidad.
+- **Gestión de usuarios**: Validación del registro, inicio de sesión, y manejo de errores en la autenticación.
+- **Gestión de ejercicios**: Verificación de la creación y obtención de ejercicios en la aplicación.
+- **Seguimiento del progreso**: Asegura que los registros de progreso se creen y gestionen correctamente para los usuarios.
+- **Gestión de rutinas**: Comprobación de la creación, asignación y obtención de rutinas personalizadas.
+- **Planes de entrenamiento**: Validación de la creación y consulta de planes de entrenamiento, garantizando que los usuarios puedan acceder a sus planes según lo configurado.
+
+## Evidencia de Ejecución de Tests
+
+A continuación, se presentan capturas de pantalla que demuestran que todos los tests se ejecutaron exitosamente 
+utilizando `pytest`. Estas evidencias aseguran que las funcionalidades principales de *MyGymBro* 
+están operando correctamente y que el código pasa los controles de calidad antes de ser integrado en el proyecto.
+
+### Captura de Pantalla
+
+![Captura 1 - Ejecución de Tests en local con poetry](./images/local-test.png)
+_Ejecución de los tests en PyCharm con poetry_
+
+![Captura 2 - Ejecución de Tests en la pipeline de GitHub Actions](./images/actions.png)
+_Ejecución del pipeline en GitHub Actions_
+
+![Captura 3 - Log de GitHub Actions](./images/log-actions.png)
+_Log de los tests en GitHub Actions_

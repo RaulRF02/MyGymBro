@@ -33,7 +33,7 @@ Los usuarios registran detalles sobre sus entrenamientos, como:
 
 ---
 
-## Documentación del proyecto
+## 📂 Documentación del proyecto
 
 Para seguir la documentación del proyecto existe la carpeta [docs](docs), en la cual se llevará a cabo la 
 documentación de este.
@@ -41,6 +41,55 @@ documentación de este.
 En el [Hito 1](docs/Hito1.md) se podrá encontar más información acerca de la configuración de GitHub y los 
 pasos iniciales del proyecto
 
+En el [Hito 2](docs/Hito2.md)  se puede encontrar toda la información relacionada con el gestor de tareas del proyecto, 
+así como la creación de los primeros tests y la configuración de la pipeline.
+
 ---
+
+## **⚙️ Instrucciones**
+### Instalación del Proyecto
+
+Asegúrate de tener Poetry instalado. Si no lo tienes, puedes instalarlo con:
+
+``` bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+Luego, clona este repositorio y navega al directorio del proyecto:
+
+``` bash
+git clone https://github.com/tu-usuario/mygymbro.git
+cd mygymbro
+```
+
+Instala las dependencias:
+
+``` bash
+poetry install
+```
+
+---
+
+## 🛠️ Órdenes Disponibles
+
+Para iniciar la aplicación:
+
+``` bash
+poetry run python wsgi.py
+```
+
+Para ejecutar todos los tests:
+
+``` bash
+poetry run pytest
+```
+
+Para formatear el código con Black:
+
+``` bash
+poetry run black .
+```
+
+---
+
 ## 📄 **Licencia**
 Este proyecto está bajo la licencia MIT. Para más información, revisa el archivo [LICENSE](LICENSE).
