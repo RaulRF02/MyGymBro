@@ -610,16 +610,44 @@ paths:
             schema:
               type: object
               properties:
-                name:
-                  type: string
-                description:
-                  type: string
-                objective:
-                  type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  objective:
+                    type: string
+                  type:
+                    type: string
+                  weekly_frequency:
+                    type: integer
+                    example: 3
+                  difficulty_level:
+                    type: string
+                  start_date:
+                    type: string
+                    format: date
+                  end_date:
+                    type: string
+                    format: date
+                    nullable: true
+                    example: null
       responses:
-        '201':
-          description: Routine created successfully
-
+                  '201':
+                    description: Routine created successfully
+                    content:
+                      application/json:
+                        schema:
+                          type: object
+                          properties:
+                            message:
+                              type: string
+                              example: "Routine created successfully!"
+                            routine_id:
+                              type: integer
+                  '400':
+                    description: Bad Request - Missing required fields
+                  '403':
+                    description: Admin access required
     get:
       tags:
         - "Routine Management"
@@ -631,6 +659,51 @@ paths:
         '200':
           description: List of routines retrieved successfully
 
+  /api/routines/{routine_id}/exercises:
+    post:
+      tags:
+        - "Routine Management"
+      summary: Add an exercise to a routine
+      description: Adds an exercise to an existing routine by routine ID.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: routine_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                exercise_id:
+                  type: integer
+                  example: 2
+                series:
+                  type: integer
+                  example: 4
+                repetitions:
+                  type: integer
+                  example: 12
+                time:
+                  type: integer
+                  nullable: true
+                  example: 60
+                weight:
+                  type: float
+                  nullable: true
+                  example: 20.5
+      responses:
+        '201':
+          description: Exercise added to routine successfully
+        '400':
+          description: Bad Request - Missing required fields or exercise already assigned
+        '404':
+          description: Routine not found
 
   /api/training-plans:
     post:
@@ -693,3 +766,42 @@ paths:
       responses:
         '200':
           description: Training plan details retrieved successfully
+
+  /api/training-plans/{plan_id}/routines:
+    post:
+      tags:
+        - "Training Plan Management"
+      summary: Add a routine to a training plan
+      description: Adds an existing routine to the specified training plan.
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: plan_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID of the training plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                routine_id:
+                  type: integer
+      responses:
+        '201':
+          description: Routine added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request - Routine already part of the training plan or invalid input
+        '404':
+          description: Training plan or routine not found
