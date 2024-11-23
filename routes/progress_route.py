@@ -4,7 +4,8 @@ from services.progress_service import (
     create_progress_record,
     get_all_progress,
     get_progress_by_exercise,
-    get_progress_by_routine
+    get_progress_by_routine,
+    get_user_progress
 )
 
 progress_bp = Blueprint("progress_routes", __name__)
@@ -40,3 +41,19 @@ def get_progress_by_routine_route(routine_id):
     current_user = get_jwt_identity()
     user_id = current_user["user_id"]
     return jsonify(get_progress_by_routine(user_id, routine_id))
+
+@progress_bp.route("/progress/user/<int:user_id>", methods=["GET"])
+@jwt_required()
+def get_user_progress_route(user_id):
+    current_user = get_jwt_identity()
+    if current_user["role"] != "admin":
+        return {"error": "Access forbidden: Admin only"}, 403
+    return jsonify(get_user_progress(user_id))
+
+
+@progress_bp.route("/progress/my-progress", methods=["GET"])
+@jwt_required()
+def get_my_progress_route():
+    current_user = get_jwt_identity()
+    user_id = current_user["user_id"]
+    return jsonify(get_all_progress(user_id))

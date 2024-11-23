@@ -77,3 +77,19 @@ def get_progress_by_routine(user_id, routine_id):
         }
         for p in progress_records
     ], 200
+
+def get_user_progress(user_id):
+    progress_records = Progress.query.filter_by(user_id=user_id).all()
+    return [
+        {
+            "id": p.id,
+            "record_date": p.record_date,
+            "exercise_id": p.exercise_id,
+            "routine_id": p.routine_id,
+            "series_completed": p.series_completed,
+            "repetitions_per_series": p.repetitions_per_series,
+            "weight_used": p.weight_used,
+            "user_notes": p.user_notes,
+        }
+        for p in progress_records
+    ], 200

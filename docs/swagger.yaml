@@ -595,6 +595,44 @@ paths:
         '200':
           description: Progress records retrieved successfully
 
+  /api/progress/user/{user_id}:
+    get:
+      tags:
+        - "Progress Management"
+      summary: Get all progress records for a specific user
+      description: Retrieve all progress records of a specific user. Only accessible to admins.
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the user
+      responses:
+        '200':
+          description: List of progress records retrieved successfully
+        '403':
+          description:
+            Access forbidden: Admin only
+        '404':
+          description: User not found or no progress records available
+
+  /api/progress/my-progress:
+      get:
+        tags:
+          - "Progress Management"
+        summary: Get all progress records for the authenticated user
+        description: Retrieve all progress records of the logged-in user.
+        security:
+          - BearerAuth: [ ]
+        responses:
+          '200':
+            description: List of progress records retrieved successfully
+          '404':
+            description: No progress records found for the user
+
   /api/routines:
     post:
       tags:
