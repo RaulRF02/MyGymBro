@@ -1,10 +1,15 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models.routine_model import Routine
-from app import db
+from services.routine_service import (
+    create_routine,
+    get_all_routines,
+    get_routine_by_id,
+    update_routine,
+    delete_routine,
+    add_exercise_to_routine
+)
 
 routine_bp = Blueprint("routine_routes", __name__)
-
 
 # Helper function to ensure only admins can access certain endpoints
 def admin_required(fn):
@@ -21,60 +26,48 @@ def admin_required(fn):
 
 @routine_bp.route("/routines", methods=["POST"])
 @admin_required
-def create_routine():
+def create_routine_route():
     data = request.get_json()
-    new_routine = Routine(
-        name=data["name"],
-        description=data.get("description", ""),
-        objective=data["objective"],
-        routine_type="predefined",  # Ensure this is a general routine
-    )
-    db.session.add(new_routine)
-    db.session.commit()
-    return jsonify({"message": "Routine created successfully!"}), 201
+    response, status_code = create_routine(data)
+    return jsonify(response), status_code
 
 
 @routine_bp.route("/routines", methods=["GET"])
 @jwt_required()
-def get_all_routines():
-    routines = Routine.query.all()
-    result = [{"id": r.id, "name": r.name, "objective": r.objective} for r in routines]
-    return jsonify(result), 200
+def get_all_routines_route():
+    response, status_code = get_all_routines()
+    return jsonify(response), status_code
 
 
 @routine_bp.route("/routines/<int:routine_id>", methods=["GET"])
 @jwt_required()
-def get_routine(routine_id):
-    routine = Routine.query.get_or_404(routine_id)
-    return (
-        jsonify(
-            {
-                "id": routine.id,
-                "name": routine.name,
-                "objective": routine.objective,
-                "description": routine.description,
-            }
-        ),
-        200,
-    )
+def get_routine_route(routine_id):
+    response, status_code = get_routine_by_id(routine_id)
+    return jsonify(response), status_code
 
 
 @routine_bp.route("/routines/<int:routine_id>", methods=["PUT"])
 @admin_required
-def update_routine(routine_id):
+def update_routine_route(routine_id):
     data = request.get_json()
-    routine = Routine.query.get_or_404(routine_id)
-    routine.name = data.get("name", routine.name)
-    routine.description = data.get("description", routine.description)
-    routine.objective = data.get("objective", routine.objective)
-    db.session.commit()
-    return jsonify({"message": "Routine updated successfully!"}), 200
+    response, status_code = update_routine(routine_id, data)
+    return jsonify(response), status_code
 
 
 @routine_bp.route("/routines/<int:routine_id>", methods=["DELETE"])
 @admin_required
-def delete_routine(routine_id):
-    routine = Routine.query.get_or_404(routine_id)
-    db.session.delete(routine)
-    db.session.commit()
-    return jsonify({"message": "Routine deleted successfully!"}), 200
+def delete_routine_route(routine_id):
+    response, status_code = delete_routine(routine_id)
+    return jsonify(response), status_code
+
+
+@routine_bp.route("/routines/<int:routine_id>/exercises", methods=["POST"])
+@admin_required
+def add_exercise_to_routine_route(routine_id):
+    exercise_data = request.get_json()
+
+    if not exercise_data:
+        return jsonify({"error": "Exercise data is required"}), 400
+
+    response, status_code = add_exercise_to_routine(routine_id, exercise_data)
+    return jsonify(response), status_code

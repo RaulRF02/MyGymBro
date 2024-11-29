@@ -11,6 +11,10 @@ class Progress(db.Model):
         db.Date, default=datetime.utcnow
     )  # Date of the progress record
 
+    user_id = db.Column(
+        db.Integer, ForeignKey("users.id"), nullable=False
+    )
+
     # Relationships with other models
     exercise_id = db.Column(
         db.Integer, ForeignKey("exercises.id"), nullable=False
