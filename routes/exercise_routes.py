@@ -27,29 +27,34 @@ def trainer_or_admin_required(fn):
 @trainer_or_admin_required
 def create_exercise_route():
     data = request.get_json()
-    return jsonify(create_exercise(data))
+    response, status_code = create_exercise(data)
+    return jsonify(response), status_code
 
 
 @exercise_bp.route("/exercises", methods=["GET"])
 @jwt_required()
 def get_all_exercises_route():
-    return jsonify(get_all_exercises())
+    response, status_code = get_all_exercises()
+    return jsonify(response), status_code
 
 
 @exercise_bp.route("/exercises/<int:exercise_id>", methods=["GET"])
 @jwt_required()
 def get_exercise_route(exercise_id):
-    return jsonify(get_exercise_by_id(exercise_id))
+    response, status_code = get_exercise_by_id(exercise_id)
+    return jsonify(response), status_code
 
 
 @exercise_bp.route("/exercises/<int:exercise_id>", methods=["PUT"])
 @trainer_or_admin_required
 def update_exercise_route(exercise_id):
     data = request.get_json()
-    return jsonify(update_exercise(exercise_id, data))
+    response, status_code = update_exercise(exercise_id, data)
+    return jsonify(response), status_code
 
 
 @exercise_bp.route("/exercises/<int:exercise_id>", methods=["DELETE"])
 @trainer_or_admin_required
 def delete_exercise_route(exercise_id):
-    return jsonify(delete_exercise(exercise_id))
+    response, status_code = delete_exercise(exercise_id)
+    return jsonify(response), status_code

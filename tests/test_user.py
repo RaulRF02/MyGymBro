@@ -81,3 +81,45 @@ def test_login_user_invalid_credentials(client):
     data = response.get_json()
     assert response.status_code == 401
     assert data["message"] == "Invalid email or password"
+
+def test_get_profile(client, auth_headers):
+    response = client.get("/api/users/profile", headers=auth_headers)
+    data = response.get_json()
+    assert response.status_code == 200
+    assert "name" in data
+    assert "email" in data
+
+
+def test_add_admin_success(client, auth_headers, setup_users):
+    with client.application.app_context():
+        regular_user = User.query.filter_by(email="regular@example.com").first()
+        assert regular_user is not None, "Regular user was not created during setup."
+
+    response = client.put(
+        f"/api/users/add_admin/{regular_user.id}",
+        headers=auth_headers,
+    )
+    data = response.get_json()
+
+    assert response.status_code == 200
+    assert data["message"] == "User role updated to admin successfully."
+
+def test_remove_admin_success(client, auth_headers, setup_users):
+    response = client.put("/api/users/remove_admin/2", headers=auth_headers)
+    data = response.get_json()
+    assert response.status_code == 200
+    assert data["message"] == "User role updated to trainer successfully."
+
+
+def test_add_trainer_success(client, auth_headers, setup_users):
+    response = client.put("/api/users/add_trainer/3", headers=auth_headers)
+    data = response.get_json()
+    assert response.status_code == 200
+    assert data["message"] == "User role updated to trainer successfully."
+
+
+def test_remove_trainer_success(client, auth_headers, setup_users):
+    response = client.put("/api/users/remove_trainer/2", headers=auth_headers)
+    data = response.get_json()
+    assert response.status_code == 200
+    assert data["message"] == "User role updated to user successfully."

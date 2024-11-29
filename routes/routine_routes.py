@@ -28,35 +28,46 @@ def admin_required(fn):
 @admin_required
 def create_routine_route():
     data = request.get_json()
-    return jsonify(create_routine(data))
+    response, status_code = create_routine(data)
+    return jsonify(response), status_code
 
 
 @routine_bp.route("/routines", methods=["GET"])
 @jwt_required()
 def get_all_routines_route():
-    return jsonify(get_all_routines())
+    response, status_code = get_all_routines()
+    return jsonify(response), status_code
 
 
 @routine_bp.route("/routines/<int:routine_id>", methods=["GET"])
 @jwt_required()
 def get_routine_route(routine_id):
-    return jsonify(get_routine_by_id(routine_id))
+    response, status_code = get_routine_by_id(routine_id)
+    return jsonify(response), status_code
 
 
 @routine_bp.route("/routines/<int:routine_id>", methods=["PUT"])
 @admin_required
 def update_routine_route(routine_id):
     data = request.get_json()
-    return jsonify(update_routine(routine_id, data))
+    response, status_code = update_routine(routine_id, data)
+    return jsonify(response), status_code
 
 
 @routine_bp.route("/routines/<int:routine_id>", methods=["DELETE"])
 @admin_required
 def delete_routine_route(routine_id):
-    return jsonify(delete_routine(routine_id))
+    response, status_code = delete_routine(routine_id)
+    return jsonify(response), status_code
+
 
 @routine_bp.route("/routines/<int:routine_id>/exercises", methods=["POST"])
 @admin_required
 def add_exercise_to_routine_route(routine_id):
     exercise_data = request.get_json()
-    return jsonify(add_exercise_to_routine(routine_id, exercise_data))
+
+    if not exercise_data:
+        return jsonify({"error": "Exercise data is required"}), 400
+
+    response, status_code = add_exercise_to_routine(routine_id, exercise_data)
+    return jsonify(response), status_code

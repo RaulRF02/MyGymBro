@@ -16,7 +16,8 @@ def create_progress_route():
     data = request.get_json()
     current_user = get_jwt_identity()
     current_user_id = current_user["user_id"]
-    return jsonify(create_progress_record(data, current_user_id))
+    response, status_code = create_progress_record(data, current_user_id)
+    return jsonify(response), status_code
 
 
 @progress_bp.route("/progress", methods=["GET"])
@@ -24,7 +25,8 @@ def create_progress_route():
 def get_all_progress_route():
     current_user = get_jwt_identity()
     user_id = current_user["user_id"]
-    return jsonify(get_all_progress(user_id))
+    response, status_code = get_all_progress(user_id)
+    return jsonify(response), status_code
 
 
 @progress_bp.route("/progress/exercise/<int:exercise_id>", methods=["GET"])
@@ -32,7 +34,8 @@ def get_all_progress_route():
 def get_progress_by_exercise_route(exercise_id):
     current_user = get_jwt_identity()
     user_id = current_user["user_id"]
-    return jsonify(get_progress_by_exercise(user_id, exercise_id))
+    response, status_code = get_progress_by_exercise(user_id, exercise_id)
+    return jsonify(response), status_code
 
 
 @progress_bp.route("/progress/routine/<int:routine_id>", methods=["GET"])
@@ -40,15 +43,18 @@ def get_progress_by_exercise_route(exercise_id):
 def get_progress_by_routine_route(routine_id):
     current_user = get_jwt_identity()
     user_id = current_user["user_id"]
-    return jsonify(get_progress_by_routine(user_id, routine_id))
+    response, status_code = get_progress_by_routine(user_id, routine_id)
+    return jsonify(response), status_code
+
 
 @progress_bp.route("/progress/user/<int:user_id>", methods=["GET"])
 @jwt_required()
 def get_user_progress_route(user_id):
     current_user = get_jwt_identity()
     if current_user["role"] != "admin":
-        return {"error": "Access forbidden: Admin only"}, 403
-    return jsonify(get_user_progress(user_id))
+        return jsonify({"error": "Access forbidden: Admin only"}), 403
+    response, status_code = get_user_progress(user_id)
+    return jsonify(response), status_code
 
 
 @progress_bp.route("/progress/my-progress", methods=["GET"])
@@ -56,4 +62,5 @@ def get_user_progress_route(user_id):
 def get_my_progress_route():
     current_user = get_jwt_identity()
     user_id = current_user["user_id"]
-    return jsonify(get_all_progress(user_id))
+    response, status_code = get_all_progress(user_id)
+    return jsonify(response), status_code

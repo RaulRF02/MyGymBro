@@ -17,32 +17,38 @@ def create_training_plan_route():
     data = request.get_json()
     current_user = get_jwt_identity()
     current_user_id = current_user["user_id"]
-    return jsonify(create_training_plan(data, current_user_id))
+    response, status_code = create_training_plan(data, current_user_id)
+    return jsonify(response), status_code
 
 
 @training_plan_bp.route("/training-plans", methods=["GET"])
 @jwt_required()
 def get_all_training_plans_route():
-    return jsonify(get_all_training_plans())
+    response, status_code = get_all_training_plans()
+    return jsonify(response), status_code
 
 
 @training_plan_bp.route("/training-plans/<int:plan_id>", methods=["GET"])
 @jwt_required()
 def get_training_plan_route(plan_id):
-    return jsonify(get_training_plan_by_id(plan_id))
+    response, status_code = get_training_plan_by_id(plan_id)
+    return jsonify(response), status_code
 
 
 @training_plan_bp.route("/training-plans/<int:plan_id>", methods=["PUT"])
 @jwt_required()
 def update_training_plan_route(plan_id):
     data = request.get_json()
-    return jsonify(update_training_plan(plan_id, data))
+    response, status_code = update_training_plan(plan_id, data)
+    return jsonify(response), status_code
 
 
 @training_plan_bp.route("/training-plans/<int:plan_id>", methods=["DELETE"])
 @jwt_required()
 def delete_training_plan_route(plan_id):
-    return jsonify(delete_training_plan(plan_id))
+    response, status_code = delete_training_plan(plan_id)
+    return jsonify(response), status_code
+
 
 @training_plan_bp.route("/training-plans/<int:plan_id>/routines", methods=["POST"])
 @jwt_required()
@@ -51,6 +57,7 @@ def add_routine_to_training_plan_route(plan_id):
     routine_id = data.get("routine_id")
 
     if not routine_id:
-        return {"error": "Routine ID is required"}, 400
+        return jsonify({"error": "Routine ID is required"}), 400
 
-    return jsonify(add_routine_to_training_plan(plan_id, routine_id))
+    response, status_code = add_routine_to_training_plan(plan_id, routine_id)
+    return jsonify(response), status_code
