@@ -44,6 +44,9 @@ pasos iniciales del proyecto
 En el [Hito 2](docs/Hito2.md)  se puede encontrar toda la información relacionada con el gestor de tareas del proyecto, 
 así como la creación de los primeros tests y la configuración de la pipeline.
 
+En el [Hito 3](docs/Hito3.md) se ha completado la implementación de la API Rest basada en microservicios, además se ha
+añadido el sistema de logs y todas las pruebas automatizadas de la API.
+
 ---
 
 ## **⚙️ Instrucciones**
