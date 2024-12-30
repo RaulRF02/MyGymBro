@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    environment:
+      FLASK_ENV: ${FLASK_ENV}
+      DATABASE_URL: ${DATABASE_URL}
+      APP_DEBUG: ${APP_DEBUG}
+    volumes:
+      - app_data:/app/data
+    depends_on:
+      - sqlite
+
+  sqlite:
+    image: alpine
+    command: ["sh", "-c", "mkdir -p /data && tail -f /dev/null"]
+    volumes:
+      - app_data:/data
+
+volumes:
+  app_data:
+    driver: local
