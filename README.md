@@ -47,6 +47,9 @@ así como la creación de los primeros tests y la configuración de la pipeline.
 En el [Hito 3](docs/Hito3.md) se ha completado la implementación de la API Rest basada en microservicios, además se ha
 añadido el sistema de logs y todas las pruebas automatizadas de la API.
 
+En el [Hito 4](docs/Hito4.md) se han impelemntado servicios con Docker Compose, separando aplicación y datos en 
+contenedores, configurando puertos, y pruebas automatizadas para un entorno reproducible y escalable.
+
 ---
 
 ## **⚙️ Instrucciones**

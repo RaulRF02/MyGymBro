@@ -40,3 +40,14 @@ reproducible en diferentes entornos, cumpliendo con los principios de configurac
   específicas de cada entorno.
   - Esto permite cambiar el entorno (desarrollo o producción) simplemente especificando el archivo de entorno en el 
   comando docker-compose.
+
+#### Ejemplo de uso en desarrollo:
+
+```
+docker compose --env-file .env.dev up --build
+```
+
+#### Ejemplo de uso en producción:
+```
+docker compose --env-file .env.prod up --build
+```
