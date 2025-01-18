@@ -1,1 +1,1 @@
-web: gunicorn wsgi:app
+web: poetry install --no-root && gunicorn wsgi:app
