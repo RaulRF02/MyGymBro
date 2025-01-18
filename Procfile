@@ -1,1 +1,1 @@
-web: poetry install --no-root && gunicorn wsgi:app
+web: pip install -r requirements.txt && gunicorn wsgi:app
