@@ -17,9 +17,6 @@ def create_app():
         app, config=app.config["SWAGGER"], template_file="docs/swagger.yaml"
     )
 
-    with app.app_context():
-        db.create_all()
-
     from models.exercise_model import Exercise
     from models.routine_model import Routine
     from models.routine_exercise import RoutineExercise
