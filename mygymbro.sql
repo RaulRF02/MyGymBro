@@ -1,4 +1,3 @@
-PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 CREATE TABLE users (
 	id INTEGER NOT NULL, 
@@ -19,7 +18,7 @@ CREATE TABLE users (
 	UNIQUE (email), 
 	CONSTRAINT user_roles CHECK (role IN ('admin', 'trainer', 'user')), 
 	CONSTRAINT training_goals CHECK (training_goal IN ('weight_loss', 'muscle_gain', 'toning')), 
-	CHECK (subscription_status IN (0, 1))
+	CHECK (subscription_status IN (TRUE, FALSE))
 );
 INSERT INTO users VALUES(1,'raul','raul','awefgasgr','raul','scrypt:32768:8:1$GjxYqMNZz07bHZzo$cc41d2f5f703cc2101892a19d0763eae2465d86bb255cbd190504f06fd48be120b607b8a53fbbca1a54cfaa56a50b592040d73d83c4b4dc62b6b4aecf99d202d','admin',NULL,NULL,NULL,NULL,NULL,0);
 INSERT INTO users VALUES(2,'pablo','pablo','asdfwf','pablo','scrypt:32768:8:1$zJCJBoXjDqN1RMKn$b3f45dc4660b71749432a9c24154667de54699ce2f1cfd9ef5c73249848969018b02e79de77e33a76fe8e1d5b9476db3832359cbe3bf4dad4e9df3d09eae3221','user',NULL,NULL,NULL,NULL,NULL,0);
@@ -43,8 +42,8 @@ CREATE TABLE exercises (
 	PRIMARY KEY (id), 
 	CONSTRAINT exercise_type CHECK (category IN ('strength', 'cardio', 'mobility', 'flexibility')), 
 	CONSTRAINT count_types CHECK (count_type IN ('repetitions', 'time')), 
-	CHECK (equipment_required IN (0, 1)), 
-	CHECK (equipment_optional IN (0, 1))
+	CHECK (equipment_required IN (TRUE, FALSE)),
+    CHECK (equipment_optional IN (TRUE, FALSE))
 );
 INSERT INTO exercises VALUES(1,'Bench Press','The bench press is a strength exercise that primarily targets the chest, triceps, and shoulders. It is performed lying on a flat bench while lifting a barbell with weights.','strength','repetitions',8,1,0,'barbell, weight plates, flat bench',4,0.0,90,NULL,'Keep your feet firmly on the ground, lower the bar slowly to your chest, and push up without locking your elbows.');
 INSERT INTO exercises VALUES(2,'Jump Rope','High-intensity exercise to improve cardiovascular endurance.','cardio','time',300,0,0,'None',3,0.0,60,NULL,'Keep your core engaged and land softly on your toes.');
