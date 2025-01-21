@@ -36,8 +36,5 @@ class Config:
         "security": [{"Bearer": []}],
     }
 
-    if os.environ.get('FLASK_ENV') == 'production':
-        SQLALCHEMY_DATABASE_URI = "postgres://u9ivmvko2bnq84:pb8075f9c1c1b371ed245c236e06597056e0c0f54350d926674e178b5cc11c10f@cah8ha8ra8h8i7.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d3qgn51e1i6j03"
-    else:
-        SQLALCHEMY_DATABASE_URI = "sqlite:///mygymbro.db"
+    SQLALCHEMY_DATABASE_URI = "postgres://u9ivmvko2bnq84:pb8075f9c1c1b371ed245c236e06597056e0c0f54350d926674e178b5cc11c10f@cah8ha8ra8h8i7.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d3qgn51e1i6j03"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
