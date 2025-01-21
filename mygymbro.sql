@@ -100,7 +100,7 @@ CREATE TABLE routines (
 	created_by INTEGER, 
 	assigned_to INTEGER, 
 	current_progress VARCHAR(12), 
-	created_at DATETIME, 
+	created_at TIMESTAMP,
 	start_date DATE, 
 	end_date DATE, 
 	notes TEXT, 
