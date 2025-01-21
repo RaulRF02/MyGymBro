@@ -111,7 +111,6 @@ CREATE TABLE IF NOT EXISTS routines (
 	CONSTRAINT difficulty_levels CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced')), 
 	FOREIGN KEY(created_by) REFERENCES users (id), 
 	FOREIGN KEY(assigned_to) REFERENCES users (id), 
-	CONSTRAINT difficulty_levels CHECK (current_progress IN ('beginner', 'intermediate', 'advanced'))
 );
 INSERT INTO routines VALUES(1,'Full Body Strength - Beginner','Full body routine focusing on building strength for beginners.','muscle_gain','predefined',1,NULL,NULL,NULL,3,'beginner',1,NULL,NULL,'2024-11-18 19:11:33.335603','2024-11-20',NULL,NULL);
 CREATE TABLE IF NOT EXISTS routine_exercises (
