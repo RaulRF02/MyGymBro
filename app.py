@@ -2,7 +2,7 @@ from flask import Flask
 from flask_restful import Api
 from flasgger import Swagger
 from config.settings import Config
-from extensions import db, jwt
+from extensions import db, jwt, get_scoped_session
 from register_blueprints import register_blueprints
 
 
@@ -11,6 +11,8 @@ def create_app():
     app.config.from_object(Config)
 
     db.init_app(app)
+    with app.app_context():
+        session = get_scoped_session()
     jwt.init_app(app)
     api = Api(app)
     swagger = Swagger(
@@ -25,5 +27,12 @@ def create_app():
 
     # Register blueprints
     register_blueprints(app)
+
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        """
+        Este método cierra las sesiones de SQLAlchemy después de cada solicitud.
+        """
+        db.session.remove()
 
     return app
