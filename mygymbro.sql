@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS training_plans (
 	FOREIGN KEY(created_by) REFERENCES users (id)
 );
 INSERT INTO training_plans VALUES(1,'Gorilla Chest','This training plan is to get the 100 kg on chest press','muscle_gain',3,2,'intermediate',NULL,NULL,1,1,NULL,NULL,'active',NULL);
-INSERT INTO training_plans VALUES(2,'Muscle Gain Program','A 12-week plan focused on building muscle.','muscle_gain',12,5,'advanced',NULL,NULL,2,1,'2024-11-20','2025-02-20','active','Focus on compound exercises for maximum results.');
+INSERT INTO training_plans VALUES(2,'Muscle Gain Program','A 12-week plan focused on building muscle.','muscle_gain',12,5,'advanced',NULL,NULL,2,1,'2024-11-20','2025-02-20','active',NULL);
 CREATE TABLE IF NOT EXISTS routines (
 	id INTEGER NOT NULL, 
 	name VARCHAR(100) NOT NULL, 
