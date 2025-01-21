@@ -1,5 +1,5 @@
 BEGIN TRANSACTION;
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
 	id INTEGER NOT NULL, 
 	name VARCHAR(50) NOT NULL, 
 	last_name VARCHAR(100) NOT NULL, 
@@ -24,7 +24,7 @@ INSERT INTO users VALUES(1,'raul','raul','awefgasgr','raul','scrypt:32768:8:1$Gj
 INSERT INTO users VALUES(2,'pablo','pablo','asdfwf','pablo','scrypt:32768:8:1$zJCJBoXjDqN1RMKn$b3f45dc4660b71749432a9c24154667de54699ce2f1cfd9ef5c73249848969018b02e79de77e33a76fe8e1d5b9476db3832359cbe3bf4dad4e9df3d09eae3221','user',NULL,NULL,NULL,NULL,NULL,TRUE);
 INSERT INTO users VALUES(3,'carlos','carlos','13574687E','carlos','scrypt:32768:8:1$RW326AkDv7dJSPA1$eb3ecb13e3f0a307e8e495351a2f6ea5372d7ffe6ea0dca1216f166c40040bafc72893404386617c67e906a2188dbfc7f5e2a1137499002000baa5f5802b5394','user',NULL,NULL,NULL,NULL,NULL,TRUE);
 INSERT INTO users VALUES(4,'admin','admin','admin','admin','scrypt:32768:8:1$MJ1meou84wfuLw0q$325a61a38b28a6a0022fa603182ce17425748b9b5fe23b1e38dbaaa550d2a3fb917c4c3d1561042cff61f4ef06aa3337e5bcb8a9864c76a2dbec08d9060f0a4f','user',NULL,NULL,NULL,NULL,NULL,TRUE);
-CREATE TABLE exercises (
+CREATE TABLE IF NOT EXISTS exercises (
 	id INTEGER NOT NULL, 
 	name VARCHAR(100) NOT NULL, 
 	description TEXT, 
@@ -61,7 +61,7 @@ INSERT INTO exercises VALUES(13,'Deadlift','Builds leg strength and stability.',
 INSERT INTO exercises VALUES(14,'Burpees','Burns calories and strengthens the legs.','cardio','time',300,FALSE,FALSE,'None',3,0.0,60,NULL,'Maintain a quick pace and steady rhythm.');
 INSERT INTO exercises VALUES(15,'Dips','Targets triceps and shoulders.','strength','repetitions',12,TRUE,FALSE,'Parallel Bars',3,0.0,90,NULL,'Lower yourself slowly to avoid injury.');
 INSERT INTO exercises VALUES(16,'Chest Stretch','Stretches the chest and shoulders.','flexibility','time',60,FALSE,FALSE,'None',2,0.0,20,NULL,'Hold the stretch without bouncing.');
-CREATE TABLE training_plans (
+CREATE TABLE IF NOT EXISTS training_plans (
 	id INTEGER NOT NULL, 
 	name VARCHAR(100) NOT NULL, 
 	description TEXT, 
@@ -79,13 +79,12 @@ CREATE TABLE training_plans (
 	trainer_notes TEXT, 
 	PRIMARY KEY (id), 
 	CONSTRAINT training_goals CHECK (objective IN ('weight_loss', 'muscle_gain', 'toning')), 
-	CONSTRAINT difficulty_levels CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced')), 
-	FOREIGN KEY(assigned_to) REFERENCES users (id), 
+	FOREIGN KEY(assigned_to) REFERENCES users (id),
 	FOREIGN KEY(created_by) REFERENCES users (id)
 );
 INSERT INTO training_plans VALUES(1,'Gorilla Chest','This training plan is to get the 100 kg on chest press','muscle_gain',3,2,'intermediate',NULL,NULL,1,1,NULL,NULL,'active',NULL);
 INSERT INTO training_plans VALUES(2,'Muscle Gain Program','A 12-week plan focused on building muscle.','muscle_gain',12,5,'intermediate',NULL,NULL,2,1,'2024-11-20','2025-02-20','active','Focus on compound exercises for maximum results.');
-CREATE TABLE routines (
+CREATE TABLE IF NOT EXISTS routines (
 	id INTEGER NOT NULL, 
 	name VARCHAR(100) NOT NULL, 
 	description TEXT, 
@@ -114,7 +113,7 @@ CREATE TABLE routines (
 	CONSTRAINT difficulty_levels CHECK (current_progress IN ('beginner', 'intermediate', 'advanced'))
 );
 INSERT INTO routines VALUES(1,'Full Body Strength - Beginner','Full body routine focusing on building strength for beginners.','muscle_gain','predefined',1,NULL,NULL,NULL,3,'beginner',1,NULL,NULL,'2024-11-18 19:11:33.335603','2024-11-20',NULL,NULL);
-CREATE TABLE routine_exercises (
+CREATE TABLE IF NOT EXISTS routine_exercises (
 	routine_id INTEGER NOT NULL, 
 	exercise_id INTEGER NOT NULL, 
 	series INTEGER, 
@@ -130,7 +129,7 @@ INSERT INTO routine_exercises VALUES(1,2,3,10,NULL,50.0);
 INSERT INTO routine_exercises VALUES(1,3,3,8,NULL,0.0);
 INSERT INTO routine_exercises VALUES(1,4,2,NULL,300.0,NULL);
 INSERT INTO routine_exercises VALUES(1,5,4,15,NULL,0.0);
-CREATE TABLE progress_records (
+CREATE TABLE IF NOT EXISTS progress_records (
 	id INTEGER NOT NULL, 
 	record_date DATE, 
 	exercise_id INTEGER NOT NULL, 
@@ -151,14 +150,14 @@ CREATE TABLE progress_records (
 );
 INSERT INTO progress_records VALUES(1,'2024-11-04',1,1,1,3,9,90.0,65.0,'I should use less weight','so much effort','completed',98,1);
 INSERT INTO progress_records VALUES(2,'2024-11-23',1,2,1,4,12,NULL,50.0,'Felt strong during the session.','Increase weight by 5kg next session.','complete',7,1);
-CREATE TABLE alembic_version (
+CREATE TABLE IF NOT EXISTS alembic_version (
 	version_num VARCHAR(32) NOT NULL, 
 	CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num)
 );
-CREATE TABLE _alembic_tmp_progress_records (
+CREATE TABLE IF NOT EXISTS _alembic_tmp_progress_records (
 	id INTEGER NOT NULL, 
 	record_date DATE, 
-	exercise_id INTEGER NOT NULL, 
+	exercise_id INTEGER NOT NULL,
 	routine_id INTEGER NOT NULL, 
 	training_plan_id INTEGER, 
 	series_completed INTEGER, 
