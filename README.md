@@ -7,6 +7,8 @@ usuarios una herramienta flexible y accesible para crear, gestionar y hacer segu
 entrenamiento. El sistema está pensado tanto para entrenadores, que deben gestionar múltiples clientes, como para 
 usuarios individuales que deseen un seguimiento personalizado de su progreso físico.
 
+La api desarrollada en este proyecto se encuentra desplegada en https://mygymbro-1ea8dc7c55ba.herokuapp.com/apidocs/
+
 ### 🎯 **Objetivo Principal**
 El objetivo de esta aplicación es proporcionar una solución integral para la planificación y seguimiento de 
 entrenamientos físicos, permitiendo a los usuarios alcanzar sus metas de forma eficiente, ya sea perder peso, 
@@ -49,6 +51,8 @@ añadido el sistema de logs y todas las pruebas automatizadas de la API.
 
 En el [Hito 4](docs/Hito4.md) se han impelemntado servicios con Docker Compose, separando aplicación y datos en 
 contenedores, configurando puertos, y pruebas automatizadas para un entorno reproducible y escalable.
+
+En el [Hito 5](docs/Hito5.md) he documentado el despliegue de la api usando Heroku.
 
 ---
 
